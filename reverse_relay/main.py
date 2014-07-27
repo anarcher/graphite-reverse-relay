@@ -13,6 +13,8 @@ def main():
     #endpoint
     endpoint = TCP4ServerEndpoint(reactor, port)
     endpoint.listen(Proxy(backend_port=backend_port))
+
+    print "Starting proxy."
     reactor.run()
 
 if __name__ == '__main__':

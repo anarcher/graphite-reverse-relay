@@ -32,11 +32,11 @@ class MetricPickleReceiver(Int32StringReceiver):
         self.backend_defer = connectProtocol(self.backend_point,self.backend)
         self.backend_defer.addCallback(self.backendConnectionMade)
 
-
     def backendConnectionMade(self,p):
         self.send_queue.get().addCallback(self.sendLineToBackend)
 
     def sendLineToBackend(self,line):
+        log.info("line:%s" % line)
         self.backend.lineFed(line)
 
     def connectionMade(self):
@@ -55,7 +55,7 @@ class MetricPickleReceiver(Int32StringReceiver):
 
         for raw in datapoints:
             try:
-                (metric, (value, timestamp)) = raw
+                (metric, (timestamp, value)) = raw
             except Exception, e:
                 log.error('Error decoding pickle: %s' % e)
 
@@ -68,7 +68,6 @@ class MetricPickleReceiver(Int32StringReceiver):
             return "%s:%d" % (peer.host, peer.port)
         else:
             return "peer"
-
 
 class Proxy(Factory):
     def __init__(self,backend_port):
