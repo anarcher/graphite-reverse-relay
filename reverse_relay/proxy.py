@@ -59,7 +59,7 @@ class MetricPickleReceiver(Int32StringReceiver):
             except Exception, e:
                 log.error('Error decoding pickle: %s' % e)
 
-            newline = "%s %s %s" % (metric,value,timestamp)
+            newline = "%s %s %s" % (metric,value,int(timestamp))
             self.send_queue.put(newline)
 
     def getPeerName(self):
